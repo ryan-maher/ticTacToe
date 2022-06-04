@@ -393,7 +393,6 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
 
     int arrayLength = 0;
     int arrayCounter = 0;
-    //int counter = 0;
     
     if(playerChar == 'x'){
         computerChar = 'o';
@@ -403,7 +402,7 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
         computerChar = 'x';
     }
 
-    // Idea: save values of available spots in an array and generate a random number from 0 to the length of the array -1
+    // Save values of available spots in an array and generate a random number from 0 to the length of the array-1
     // This way, computer never hangs because it never picks a taken spot
     
     for(int i = 0; i<3; i++){
@@ -419,19 +418,6 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
     }
 
     int arrayChoices[arrayLength];
-
-    // broken
-    // for(int i = 0; i<3; i++){
-    //     if(row1[i] == ' '){
-    //         arrayChoices[i] = i+1;
-    //     }
-    //     if(row2[i] == ' '){
-    //         arrayChoices[i+3] = i+4;
-    //     }
-    //     if(row3[i] == ' '){
-    //         arrayChoices[i+6] = i+7;
-    //     }
-    // }
 
     // Check first row values
     for(int i = 0; i < 3; i++){
@@ -462,7 +448,6 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
 
             arrayChoices[arrayCounter] = i+7;
             arrayCounter++;
-
         }
 
     }
@@ -481,44 +466,6 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
     } else{
         row3[computerChoice-7] = computerChar;
     }
-
-    // Randomly choose position from 1 to 9 and check if it is taken
-    // Gets slower as less options become available
-
-    // do{
-    //     srand(time(0));
-    //     computerChoice = 1 + rand() % 9;
-        
-        
-    //     if(computerChoice < 4){
-    //         if(row1[computerChoice-1] != ' '){
-    //             valid = 0;
-    //         } else{
-    //             valid = 1;
-    //             row1[computerChoice-1] = computerChar;
-    //             printf("Computer picked %i\n", computerChoice);
-    //         }
-    //     }
-    //     else if(computerChoice > 3 && computerChoice < 7){
-    //         if(row2[computerChoice-4] != ' '){
-    //             valid = 0;
-    //         } else{
-    //             valid = 1;
-    //             row2[computerChoice-4] = computerChar;
-    //             printf("Computer picked %i\n", computerChoice);
-    //         }
-    //     }
-    //     else if(computerChoice > 6 && computerChoice < 10){
-    //         if(row3[computerChoice-7] != ' '){
-    //             valid = 0;
-    //         } else{
-    //             valid = 1;
-    //             row3[computerChoice-7] = computerChar;
-    //             printf("Computer picked %i\n", computerChoice);
-    //         }
-    //     }
-
-    // } while(!valid);
 
 }
 
