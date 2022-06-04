@@ -152,16 +152,25 @@ void printTableStart(){
 
 }
 
-int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
+int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, int gamemode){
 
     int boardChoice;
     
+    if(gamemode == 2){
+        printf("[Player %c] ", displayCapitalXO(playerChar));
+    }
+
     printf("Enter a position from 1 to 9: ");
     scanf("%i", &boardChoice);
 
     if(boardChoice < 1 || boardChoice > 9){
+        
+        if(gamemode == 2){
+            printf("[Player %c] ", displayCapitalXO(playerChar));
+        }
+
         printf("Please choose a number from 1 to 9.\n");
-        askUserInputBoard(row1, row2, row3, playerChar);
+        askUserInputBoard(row1, row2, row3, playerChar, gamemode);
     
     } else{
         switch(boardChoice){
@@ -170,7 +179,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row1[0]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row1[0]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
 
@@ -179,7 +188,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row1[1]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row1[1]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
 
@@ -188,7 +197,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row1[2]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row1[2]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
 
@@ -197,7 +206,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row2[0]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row2[0]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
 
@@ -206,7 +215,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row2[1]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row2[1]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
 
@@ -215,7 +224,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row2[2]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row2[2]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
 
@@ -224,7 +233,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row3[0]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row3[0]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
 
@@ -233,7 +242,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row3[1]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row3[1]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
 
@@ -242,7 +251,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
                 (row3[2]) = playerChar;
             } else {
                 printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row3[2]));
-                askUserInputBoard(row1, row2, row3, playerChar);
+                askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
         }
@@ -385,7 +394,7 @@ int checkWinCondition(char row1[], char row2[], char row3[], char winnerChar){
     
 }
 
-void askComputerInputBoard(char row1[], char row2[], char row3[], char playerChar){
+void askComputerInputBoard(char row1[], char row2[], char row3[], char playerChar, int difficulty, int turnCounter){
 
     char computerChar;
     int computerChoice;
@@ -402,69 +411,133 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
         computerChar = 'x';
     }
 
-    // Save values of available spots in an array and generate a random number from 0 to the length of the array-1
-    // This way, computer never hangs because it never picks a taken spot
+    // Difficulty 1 is based on randomization
+    if(difficulty == 1){
     
-    for(int i = 0; i<3; i++){
-        if(row1[i] == ' '){
-            arrayLength++;
-        }
-        if(row2[i] == ' '){
-            arrayLength++;
-        }
-        if(row3[i] == ' '){
-            arrayLength++;
-        }
-    }
-
-    int arrayChoices[arrayLength];
-
-    // Check first row values
-    for(int i = 0; i < 3; i++){
-
-        if(row1[i] == ' '){
-
-            arrayChoices[arrayCounter] = i+1;
-            arrayCounter++;
+        // Save values of available spots in an array and generate a random number from 0 to the length of the array-1
+        // This way, computer never hangs because it never picks a taken spot
+        
+        for(int i = 0; i<3; i++){
+            if(row1[i] == ' '){
+                arrayLength++;
+            }
+            if(row2[i] == ' '){
+                arrayLength++;
+            }
+            if(row3[i] == ' '){
+                arrayLength++;
+            }
         }
 
-    }
+        int arrayChoices[arrayLength];
 
-    // Check second row values
-    for(int i = 0; i < 3; i++){
+        // Check first row values
+        for(int i = 0; i < 3; i++){
 
-        if(row2[i] == ' '){
-            
-            arrayChoices[arrayCounter] = i+4;
-            arrayCounter++;
+            if(row1[i] == ' '){
+
+                arrayChoices[arrayCounter] = i+1;
+                arrayCounter++;
+            }
+
         }
 
-    }
+        // Check second row values
+        for(int i = 0; i < 3; i++){
 
-    // Check third row values
-    for(int i = 0; i < 3; i++){
+            if(row2[i] == ' '){
+                
+                arrayChoices[arrayCounter] = i+4;
+                arrayCounter++;
+            }
 
-        if(row3[i] == ' '){
-
-            arrayChoices[arrayCounter] = i+7;
-            arrayCounter++;
         }
 
-    }
-    
-    srand(time(0));
-    computerChoice = arrayChoices[(rand() % arrayLength)];
-    
-    printf("Computer has chosen %i", computerChoice);
+        // Check third row values
+        for(int i = 0; i < 3; i++){
 
-    if(computerChoice > 0 && computerChoice < 4){
-        row1[computerChoice-1] = computerChar;
+            if(row3[i] == ' '){
 
-    } else if(computerChoice > 3 && computerChoice < 7){
-        row2[computerChoice-4] = computerChar;
-    
-    } else{
-        row3[computerChoice-7] = computerChar;
+                arrayChoices[arrayCounter] = i+7;
+                arrayCounter++;
+            }
+
+        }
+        
+        srand(time(0));
+        computerChoice = arrayChoices[(rand() % arrayLength)];
+        
+        printf("Computer has chosen %i", computerChoice);
+
+        if(computerChoice > 0 && computerChoice < 4){
+            row1[computerChoice-1] = computerChar;
+
+        } else if(computerChoice > 3 && computerChoice < 7){
+            row2[computerChoice-4] = computerChar;
+        
+        } else{
+            row3[computerChoice-7] = computerChar;
+        }
+
+    // UNDER CONSTRUCTION
+    // Difficulty 2 prioritizes blocking the player's winning lines
+    } else if(difficulty == 2){
+
+        for(int i = 0; i<3; i++){
+            if(row1[i] == ' '){
+                arrayLength++;
+            }
+            if(row2[i] == ' '){
+                arrayLength++;
+            }
+            if(row3[i] == ' '){
+                arrayLength++;
+            }
+        }
+
+        int arrayChoices[arrayLength];
+
+        // Check first row values
+        for(int i = 0; i < 3; i++){
+
+            if(row1[i] == ' '){
+
+                arrayChoices[arrayCounter] = i+1;
+                arrayCounter++;
+            }
+
+        }
+
+        // Check second row values
+        for(int i = 0; i < 3; i++){
+
+            if(row2[i] == ' '){
+                
+                arrayChoices[arrayCounter] = i+4;
+                arrayCounter++;
+            }
+
+        }
+
+        // Check third row values
+        for(int i = 0; i < 3; i++){
+
+            if(row3[i] == ' '){
+
+                arrayChoices[arrayCounter] = i+7;
+                arrayCounter++;
+            }
+
+        }
+
+        // // Check current board combinations
+        // if(turnCounter > 2){
+
+
+
+        // }
+
+
     }
 
 }
@@ -483,13 +556,19 @@ void clearTable(char row1[], char row2[], char row3[]){
 void main(){
 
     int inputNum;
+    int gameMode = 1;
     int startingPlayer;
     int winCondition = 0;
     char playAgain = 'n';
     int turnCounter = 0;
+    int computerDifficulty = 1;
 
     char inputLetter;
+    char player1Letter;
+    char player2Letter;
     char displayLetter;
+    char player1DisplayLetter;
+    char player2DisplayLetter;
     char firstRow[3] = {' ',' ',' '}; 
     char secondRow[3] = {' ',' ',' '};  
     char thirdRow[3]  = {' ',' ',' '};
@@ -510,144 +589,338 @@ void main(){
     }
 
     else{
-
-        do{
-            printf("\n");
-            printf("Would you like to be X or O ?\n");
-
-            inputLetter = askUserInputXO();
-
-            if(inputLetter == 'x'){
-                displayLetter = 'X';
-            } else if(inputLetter == 'o'){
-                displayLetter = 'O';
-            }
             
-            printf("\n");
-            printf("You have chosen to be %c\n", displayLetter);
+        printf("Press 1 to play against the computer. \n");
+        printf("Press 2 for local multiplayer.\n");
 
-            printf("Choosing starting player...\n");
-            sleep(1);
-            srand(time(0));
-            startingPlayer = rand() % 2;
+        gameMode = askUserInputNum();
 
-            if(startingPlayer == 0){
-                printf("You get to start first.\n");
-            } else{
-                printf("Computer gets to start first.\n");
-            }
+        if(gameMode == 1){    
+            do{
+                
+                printf("\n");
+                printf("Would you like to be X or O ?\n");
 
-            sleep(2);
+                inputLetter = askUserInputXO();
 
-            printTableStart();
+                if(inputLetter == 'x'){
+                    displayLetter = 'X';
+                } else if(inputLetter == 'o'){
+                    displayLetter = 'O';
+                } else{
+                    displayLetter = inputLetter;
+                }
+                
+                printf("\n");
+                printf("You have chosen to be %c\n", displayLetter);
 
-            printf("\n");
+                printf("Choosing starting player...\n");
+                sleep(1);
+                srand(time(0));
+                startingPlayer = rand() % 2;
 
-            printf("Throughout the game, you will be asked to mark your spot by typing in a number from 1 to 9...\n");
-            sleep(2);
-            printf("\n");
+                if(startingPlayer == 0){
+                    printf("You get to start first.\n");
+                } else{
+                    printf("Computer gets to start first.\n");
+                }
 
-            if(startingPlayer == 0){
-                printf("The positions are marked on the table above. Now, choose your first position.\n");
                 sleep(2);
-                do{
-                
-                    askUserInputBoard(&firstRow, &secondRow, &thirdRow, inputLetter);
-                    turnCounter++;
-                    printf("\n");
 
-                    printCurrentTable(firstRow, secondRow, thirdRow);
+                printTableStart();
 
-                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
-                    if(winCondition){
-                        break;
-                    }
+                printf("\n");
 
-                    if(turnCounter == 9){
-                        printf("Stalemate!\n");
-                        break;
-                    }
+                printf("Throughout the game, you will be asked to mark your spot by typing in a number from 1 to 9...\n");
+                sleep(2);
+                printf("\n");
+
+                if(startingPlayer == 0){
+                    printf("The positions are marked on the table above. Now, choose your first position.\n");
+                    sleep(2);
+                    do{
                     
-                    printf("Waiting for computer to make its pick...\n");
+                        askUserInputBoard(&firstRow, &secondRow, &thirdRow, inputLetter, gameMode);
+                        turnCounter++;
+                        printf("\n");
 
-                    sleep(1);
+                        printCurrentTable(firstRow, secondRow, thirdRow);
 
-                    askComputerInputBoard(&firstRow, &secondRow, &thirdRow, inputLetter);
-                    turnCounter++;
-                    printCurrentTable(firstRow, secondRow, thirdRow);
+                        winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                        if(winCondition){
+                            break;
+                        }
 
-                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
-                    if(winCondition){
-                        break;
-                    }
-
-                    if(turnCounter == 9){
-                        printf("Stalemate!\n");
-                        break;
-                    }
-
-                }while(!winCondition);
-
-            } else {
-                printf("The positions are marked on the table above. After the computer chooses its first position, you will get to choose yours.\n");
-                sleep(3);
-
-                do{
-                
-                    printf("\n");
-
-                    printf("Waiting for computer to make its pick...\n");
-
-                    sleep(1);
-
-                    askComputerInputBoard(&firstRow, &secondRow, &thirdRow, inputLetter);
-                    turnCounter++;
-                    printf("\n");
-
-                    printCurrentTable(firstRow, secondRow, thirdRow);
-
-                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
-                    if(winCondition){
-                        break;
-                    }
-
-                    if(turnCounter == 9){
-                        printf("Stalemate!\n");
-                        break;
-                    }
-                    
-                    printf("\n");
-
-                    askUserInputBoard(&firstRow, &secondRow, &thirdRow, inputLetter);
-                    turnCounter++;
-                    printCurrentTable(firstRow, secondRow, thirdRow);
+                        if(turnCounter == 9){
+                            printf("Stalemate!\n");
+                            break;
+                        }
                         
-                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
-                    if(winCondition){
-                        break;
-                    }
+                        printf("Waiting for computer to make its pick...\n");
 
-                    if(turnCounter == 9){
-                        printf("Stalemate!\n");
-                        break;
-                    }
+                        sleep(1);
 
-                }while(!winCondition);
-            }
-        
+                        askComputerInputBoard(&firstRow, &secondRow, &thirdRow, inputLetter, computerDifficulty, turnCounter);
+                        turnCounter++;
+                        printCurrentTable(firstRow, secondRow, thirdRow);
+
+                        winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                        if(winCondition){
+                            break;
+                        }
+
+                        if(turnCounter == 9){
+                            printf("Stalemate!\n");
+                            break;
+                        }
+
+                    }while(!winCondition);
+
+                } else {
+                    printf("The positions are marked on the table above. After the computer chooses its first position, you will get to choose yours.\n");
+                    sleep(3);
+
+                    do{
+                    
+                        printf("\n");
+
+                        printf("Waiting for computer to make its pick...\n");
+
+                        sleep(1);
+
+                        askComputerInputBoard(&firstRow, &secondRow, &thirdRow, inputLetter, computerDifficulty, turnCounter);
+                        turnCounter++;
+                        printf("\n");
+
+                        printCurrentTable(firstRow, secondRow, thirdRow);
+
+                        winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                        if(winCondition){
+                            break;
+                        }
+
+                        if(turnCounter == 9){
+                            printf("Stalemate!\n");
+                            break;
+                        }
+                        
+                        printf("\n");
+
+                        askUserInputBoard(&firstRow, &secondRow, &thirdRow, inputLetter, gameMode);
+                        turnCounter++;
+                        printCurrentTable(firstRow, secondRow, thirdRow);
+                            
+                        winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                        if(winCondition){
+                            break;
+                        }
+
+                        if(turnCounter == 9){
+                            printf("Stalemate!\n");
+                            break;
+                        }
+
+                    }while(!winCondition);
+                }
+            
+                sleep(1);
+                printf("Would you like to play again? (y/n):");
+                playAgain = askUserInputYN();
+
+                clearTable(&firstRow, &secondRow, &thirdRow);
+                printf("\n");
+                turnCounter = 0;
+            
+            } while(playAgain == 'y');
+                
+            printf("Thanks for playing! Come back soon.\n\n");
             sleep(1);
-            printf("Would you like to play again? (y/n):");
-            playAgain = askUserInputYN();
-
-            clearTable(&firstRow, &secondRow, &thirdRow);
-            printf("\n");
-            turnCounter = 0;
+            return 0;
         
-        } while(playAgain == 'y');
+        } else {
 
-        printf("Thanks for playing! Come back soon.\n\n");
-        sleep(1);
-        return 0;
+            do{
+
+                printf("Choosing starting player...\n");
+                sleep(1);
+                srand(time(0));
+                startingPlayer = rand() % 2;
+
+                if(startingPlayer == 0){
+                    printf("Player 1: You get to start first.\n");
+                } else{
+                    printf("Player 2: You get to start first.\n");
+                }
+                
+                if(startingPlayer == 0){
+                    
+                    printf("\n");
+                    printf("Player 1: Would you like to be X or O ?\n");
+
+                    player1Letter = askUserInputXO();
+
+                    if(player1Letter == 'x' || player1Letter == 'X'){
+                        
+                        player1Letter = 'x';
+                        player1DisplayLetter = 'X';
+                        
+                        player2Letter = 'o';
+                        player2DisplayLetter = 'O';
+                    
+                    } else{
+
+                        player1Letter = 'o';
+                        player1DisplayLetter = 'O';
+
+                        player2Letter = 'x';
+                        player2DisplayLetter = 'X';
+
+                    }
+
+                    printf("\n");
+                    printf("Player 1: You have chosen to be %c.\n", player1DisplayLetter);
+                    sleep(1);
+                    printf("Player 2: You will be %c.\n", player2DisplayLetter);
+                    sleep(1);
+
+                    printTableStart();
+                    printf("\n");
+
+                    printf("Throughout the game, each of you will be asked to mark your spot by typing in a number from 1 to 9...\n");
+                    sleep(2);
+                    printf("\n");
+
+                    printf("The positions are marked on the table above. Now, Player 1: choose your first position.\n");
+                    sleep(2);
+
+                    do{
+                    
+                        askUserInputBoard(&firstRow, &secondRow, &thirdRow, player1Letter, gameMode);
+                        turnCounter++;
+                        printf("\n");
+
+                        printCurrentTable(firstRow, secondRow, thirdRow);
+
+                        winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                        if(winCondition){
+                            break;
+                        }
+
+                        if(turnCounter == 9){
+                            printf("Stalemate!\n");
+                            break;
+                        }
+
+                        askUserInputBoard(&firstRow, &secondRow, &thirdRow, player2Letter, gameMode);
+
+                        turnCounter++;
+                        printCurrentTable(firstRow, secondRow, thirdRow);
+
+                        winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                        if(winCondition){
+                            break;
+                        }
+
+                        if(turnCounter == 9){
+                            printf("Stalemate!\n");
+                            break;
+                        }
+
+                    }while(!winCondition);
+
+                } else{
+
+                    printf("\n");
+                    printf("Player 2: Would you like to be X or O ?\n");
+
+                    player2Letter = askUserInputXO();
+
+                    if(player2Letter == 'x' || player2Letter == 'X'){
+                        
+                        player2Letter = 'x';
+                        player2DisplayLetter = 'X';
+                        
+                        player1Letter = 'o';
+                        player1DisplayLetter = 'O';
+                    
+                    } else{
+
+                        player2Letter = 'o';
+                        player2DisplayLetter = 'O';
+
+                        player1Letter = 'x';
+                        player1DisplayLetter = 'X';
+
+                    }
+
+                    printf("\n");
+                    printf("Player 2: You have chosen to be %c\n", player2DisplayLetter);
+                    sleep(1);
+                    printf("Player 1: You will be %c.\n", player1DisplayLetter);
+                    sleep(1);
+
+                    printTableStart();
+                    printf("\n");
+
+                    printf("Throughout the game, each of you will be asked to mark your spot by typing in a number from 1 to 9...\n");
+                    sleep(2);
+                    printf("\n");
+
+                    printf("The positions are marked on the table above. Now, Player 2: choose your first position.\n");
+                    sleep(2);
+
+                    do{
+                    
+                        askUserInputBoard(&firstRow, &secondRow, &thirdRow, player2Letter, gameMode);
+                        turnCounter++;
+                        printf("\n");
+
+                        printCurrentTable(firstRow, secondRow, thirdRow);
+
+                        winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                        if(winCondition){
+                            break;
+                        }
+
+                        if(turnCounter == 9){
+                            printf("Stalemate!\n");
+                            break;
+                        }
+
+                        askUserInputBoard(&firstRow, &secondRow, &thirdRow, player1Letter, gameMode);
+
+                        turnCounter++;
+                        printCurrentTable(firstRow, secondRow, thirdRow);
+
+                        winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                        if(winCondition){
+                            break;
+                        }
+
+                        if(turnCounter == 9){
+                            printf("Stalemate!\n");
+                            break;
+                        }
+
+                    }while(!winCondition);
+
+                }
+
+                sleep(1);
+                printf("Would you like to play again? (y/n):");
+                playAgain = askUserInputYN();
+
+                clearTable(&firstRow, &secondRow, &thirdRow);
+                printf("\n");
+                turnCounter = 0;
+
+            }while(playAgain == 'y');
+
+            printf("Thanks for playing! Come back soon.\n\n");
+            sleep(1);
+            return 0;
+
+        }
 
     }
 }
