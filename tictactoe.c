@@ -250,113 +250,131 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar){
 
 }
 
-int checkWinCondition(char row1[], char row2[], char row3[], char *winnerChar){
-    
-    // Check vertical lines
+int emptyRowCheck(char row[]){
+
+    int emptyCheck = 0;
     for(int i = 0; i < 3; i++){
+        if(row[i] == ' '){
+            emptyCheck++;
+        }
+    }
+    return emptyCheck;
+
+}
+
+int emptyColCheck(char row1[], char row2[], char row3[], int colNum){
+
+    if(row1[colNum] == ' ' || row2[colNum] == ' ' || row3[colNum] == ' '){
+        return 1;
+    } else{
+        return 0;
+    }
+
+}
+
+int emptyDiagCheck(char row1[], char row2[], char row3[], int diagNum){
+
+    if(diagNum == 0){
+
+        if(row1[0] == ' ' || row2[1] == ' ' || row3[2] == ' '){
+            return 1;
+        } else{
+            return 0;
+        }
+
+    } else{
         
-        if(!(row1[i] == ' ' && row2[i] == ' ' && row3[i] == ' ')){
-            
-            if(row1[i] == row2[i] && row2[i] == row3[i]){
-                winnerChar = row1[i];
+        if(row1[2] == ' ' || row2[1] == ' ' || row3[0] == ' '){
+            return 1;
+        } else{
+            return 0;
+        }
 
-                if(winnerChar == 'x'){
-                    winnerChar = 'X';
-                } else if(winnerChar == 'o'){
-                    winnerChar = 'O';
-                }
+    }
 
-                printf("We have a winner! %c wins the game!\n", winnerChar);
-                return 1;
-            }
+    return 0;
+
+}
+
+int checkWinCondition(char row1[], char row2[], char row3[], char winnerChar){
+
+    int row1Empty, row2Empty, row3Empty;
+    int col1Empty, col2Empty, col3Empty;
+    int diag1Empty, diag2Empty;
+
+    row1Empty = emptyRowCheck(row1);
+    row2Empty = emptyRowCheck(row2);
+    row3Empty = emptyRowCheck(row3);
+
+    col1Empty = emptyColCheck(row1,row2,row3,0);
+    col2Empty = emptyColCheck(row1,row2,row3,1);
+    col3Empty = emptyColCheck(row1,row2,row3,2);
+
+    diag1Empty = emptyDiagCheck(row1, row2, row3, 0);
+    diag2Empty = emptyDiagCheck(row1, row2, row3, 1);
+    
+    // Check horizontal
+    if(!row1Empty){
+
+        if(row1[0] == row1[1] && row1[1] == row1[2]){
+            winnerChar = row1[0];
+        }
+
+    }else if(!row2Empty){
+
+        if(row2[0] == row2[1] && row2[1] == row2[2]){
+            winnerChar = row2[0];
+        }
+
+    }else if(!row3Empty){
+
+        if(row3[0] == row3[1] && row3[1] == row3[2]){
+            winnerChar = row3[0];
         }
     }
 
-    // Check first diagonal (top left to bottom right)
-    if(!(row1[0] == ' ' || row2[1] == ' ' || row3[2] == ' ')){
+    // Check vertical
+    if(!col1Empty){
+        
+        if(row1[0] == row2[0] && row2[0] == row3[0]){
+            winnerChar = row1[0];
+        }
+
+    }else if(!col2Empty){
+        
+        if(row1[1] == row2[1] && row2[1] == row3[1]){
+            winnerChar = row1[1];
+        }
+
+    }else if(!col3Empty){
+        
+        if(row1[2] == row2[2] && row2[2] == row3[2]){
+            winnerChar = row1[2];
+        }
+    
+    }
+
+    // Check diagonals
+    if(!diag1Empty){
         
         if(row1[0] == row2[1] && row2[1] == row3[2]){
             winnerChar = row1[0];
-            
-            if(winnerChar == 'x'){
-                    winnerChar = 'X';
-                } else if(winnerChar == 'o'){
-                    winnerChar = 'O';
-                }
-
-            printf("We have a winner! %c wins the game!\n", winnerChar);
-            return 1;
         }
-    
-    }
 
-    // Check second diagonal (top right to bottom left)
-    if(!(row1[2] == ' ' || row2[1] == ' ' || row3[0] == ' '))
-    {
+    }else if(!diag2Empty){
+        
         if(row1[2] == row2[1] && row2[1] == row3[0]){
             winnerChar = row1[2];
-
-            if(winnerChar == 'x'){
-                    winnerChar = 'X';
-                } else if(winnerChar == 'o'){
-                    winnerChar = 'O';
-                }
-
-            printf("We have a winner! %c wins the game!\n", winnerChar);
-            return 1;
-        }
-
-    }
-
-    // Check horizontal lines   
-    if(!(row1[0] == ' ' || row1[1] == ' ' || row1[2] == ' ')){
-        
-        if(row1[0] == row1[1] && row1[1] == row1[2]){
-            winnerChar = row1[0];
-
-            if(winnerChar == 'x'){
-                    winnerChar = 'X';
-                } else if(winnerChar == 'o'){
-                    winnerChar = 'O';
-                }
-
-            printf("We have a winner! %c wins the game!\n", winnerChar);
-            return 1;
-        }
-
-    } else if(!(row2[0] == ' ' || row2[1] == ' ' || row2[2] == ' ')){
-        
-        if(row2[0] == row2[1] && row2[1] == row2[2]){
-            winnerChar = row2[0];
-
-            if(winnerChar == 'x'){
-                    winnerChar = 'X';
-                } else if(winnerChar == 'o'){
-                    winnerChar = 'O';
-                }
-
-            printf("We have a winner! %c wins the game!\n", winnerChar);
-            return 1;
-        }
-    
-    } else if(!(row3[0] == ' ' || row3[1] == ' ' || row3[2] == ' ')){
-        
-        if(row3[0] == row3[1] && row3[1] == row3[2]){
-            winnerChar = row3[0];
-
-            if(winnerChar == 'x'){
-                    winnerChar = 'X';
-                } else if(winnerChar == 'o'){
-                    winnerChar = 'O';
-                }
-
-            printf("We have a winner! %c wins the game!\n", winnerChar);
-            return 1;
         }
     }
-    
+
+    if(winnerChar != ' '){
+        printf("We have a winner! %c wins the game!\n", displayCapitalXO(winnerChar));
+        return 1;
+    }
+
     return 0;
-
+    
 }
 
 void askComputerInputBoard(char row1[], char row2[], char row3[], char playerChar){
@@ -469,7 +487,7 @@ void main(){
             printf("You have chosen to be %c\n", displayLetter);
 
             printf("Choosing starting player...\n");
-            sleep(2);
+            sleep(1);
             srand(time(0));
             startingPlayer = rand() % 2;
 
@@ -500,7 +518,7 @@ void main(){
 
                     printCurrentTable(firstRow, secondRow, thirdRow);
 
-                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, &winnerChar);
+                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
                     if(winCondition){
                         break;
                     }
@@ -518,7 +536,7 @@ void main(){
                     turnCounter++;
                     printCurrentTable(firstRow, secondRow, thirdRow);
 
-                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, &winnerChar);
+                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
                     if(winCondition){
                         break;
                     }
@@ -548,7 +566,7 @@ void main(){
 
                     printCurrentTable(firstRow, secondRow, thirdRow);
 
-                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, &winnerChar);
+                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
                     if(winCondition){
                         break;
                     }
@@ -564,7 +582,7 @@ void main(){
                     turnCounter++;
                     printCurrentTable(firstRow, secondRow, thirdRow);
                         
-                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, &winnerChar);
+                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
                     if(winCondition){
                         break;
                     }
