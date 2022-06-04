@@ -319,14 +319,16 @@ int checkWinCondition(char row1[], char row2[], char row3[], char winnerChar){
         if(row1[0] == row1[1] && row1[1] == row1[2]){
             winnerChar = row1[0];
         }
+    }
 
-    }else if(!row2Empty){
+    if(!row2Empty){
 
         if(row2[0] == row2[1] && row2[1] == row2[2]){
             winnerChar = row2[0];
         }
+    }
 
-    }else if(!row3Empty){
+    if(!row3Empty){
 
         if(row3[0] == row3[1] && row3[1] == row3[2]){
             winnerChar = row3[0];
@@ -340,13 +342,17 @@ int checkWinCondition(char row1[], char row2[], char row3[], char winnerChar){
             winnerChar = row1[0];
         }
 
-    }else if(!col2Empty){
+    }
+    
+    if(!col2Empty){
         
         if(row1[1] == row2[1] && row2[1] == row3[1]){
             winnerChar = row1[1];
         }
 
-    }else if(!col3Empty){
+    }
+    
+    if(!col3Empty){
         
         if(row1[2] == row2[2] && row2[2] == row3[2]){
             winnerChar = row1[2];
@@ -361,7 +367,9 @@ int checkWinCondition(char row1[], char row2[], char row3[], char winnerChar){
             winnerChar = row1[0];
         }
 
-    }else if(!diag2Empty){
+    }
+    
+    if(!diag2Empty){
         
         if(row1[2] == row2[1] && row2[1] == row3[0]){
             winnerChar = row1[2];
