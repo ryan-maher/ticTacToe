@@ -32,6 +32,7 @@ int askUserInputNum12(){
 
 }
 
+// Asks for user to input 1, 2, or 3, loops if something else is entered
 int askUserInputNum123(){
 
     int inputInt;
@@ -87,6 +88,7 @@ char askUserInputYN(){
 
 }
 
+// Prints the current tic tac toe table with marked positions
 void printCurrentTable(char row1[], char row2[], char row3[]){
 
     printf("\n");
@@ -141,6 +143,7 @@ void printCurrentTable(char row1[], char row2[], char row3[]){
 
 }
 
+// Prints tic tac toe table with numbered positions
 void printTableStart(){
     
     printf("\n");
@@ -173,6 +176,8 @@ void printTableStart(){
 
 }
 
+// Asks user to input position from 1 to 9
+// If position already taken, asks user to input another position
 int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, int gamemode){
 
     int boardChoice;
@@ -390,6 +395,7 @@ int emptyDiagCheck(char row1[], char row2[], char row3[], int diagNum){
     }
 }
 
+// Checks if win conditions for either player have been met
 int checkWinCondition(char row1[], char row2[], char row3[], char winnerChar){
 
     int row1Empty, row2Empty, row3Empty;
@@ -539,6 +545,7 @@ int randomlyChooseAvailableSpot(char row1[], char row2[], char row3[]){
 
 }
 
+// Based on difficulty, generates a position decision
 void askComputerInputBoard(char row1[], char row2[], char row3[], char playerChar, int difficulty, int turnCounter){
 
     char computerChar;
@@ -900,56 +907,31 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
             if(choicesFound > 1){
 
                 //printf("Computer has found %i optimal choices.\n", choicesFound);
-
-                printf("\n");
                 srand(time(0));
                 computerChoice = favorableChoices[(rand() % choicesFound)];
-
-                printf("Computer has chosen %i\n", computerChoice);
-
-                if(computerChoice > 0 && computerChoice < 4){
-                row1[computerChoice-1] = computerChar;
-
-                } else if(computerChoice > 3 && computerChoice < 7){
-                row2[computerChoice-4] = computerChar;
-        
-                } else{
-                row3[computerChoice-7] = computerChar;
-                }
 
             } else if(choicesFound == 1){
 
                 computerChoice = favorableChoices[choicesFound-1];
                 //printf("Computer has found %i optimal choice.\n", choicesFound);
-                printf("Computer has chosen %i\n", computerChoice);
-
-                if(computerChoice > 0 && computerChoice < 4){
-                row1[computerChoice-1] = computerChar;
-
-                } else if(computerChoice > 3 && computerChoice < 7){
-                row2[computerChoice-4] = computerChar;
-        
-                } else{
-                row3[computerChoice-7] = computerChar;
-                }
 
             } else{
 
                 //printf("Computer found no optimal choice. Picking randomly...\n");
                 computerChoice = randomlyChooseAvailableSpot(row1,row2,row3);
-                
-                printf("Computer has chosen %i\n", computerChoice);
-                
-                if(computerChoice > 0 && computerChoice < 4){
+
+            }
+
+            printf("Computer has chosen %i\n", computerChoice);
+            
+            if(computerChoice > 0 && computerChoice < 4){
                 row1[computerChoice-1] = computerChar;
 
-                } else if(computerChoice > 3 && computerChoice < 7){
+            } else if(computerChoice > 3 && computerChoice < 7){
                 row2[computerChoice-4] = computerChar;
         
-                } else{
+            } else{
                 row3[computerChoice-7] = computerChar;
-                }
-
             }
 
         // If not enough turns have been played, pick a random spot
@@ -1589,6 +1571,7 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
 
 }
 
+// Resets the table for a new game
 void clearTable(char row1[], char row2[], char row3[]){
     
     for(int i = 0; i < 3; i++){
