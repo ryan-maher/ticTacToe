@@ -15,7 +15,7 @@ char displayCapitalXO(char letter){
 }
 
 // Asks for user to input 1 or 2, loops if something else is entered
-int askUserInputNum(){
+int askUserInputNum12(){
 
     int inputInt;
     scanf("%d", &inputInt);
@@ -27,7 +27,28 @@ int askUserInputNum(){
         return 1;
     } else{
         printf("Please enter either 1 or 2: ");
-        return askUserInputNum();
+        return askUserInputNum12();
+    }
+
+}
+
+int askUserInputNum123(){
+
+    int inputInt;
+    scanf("%d", &inputInt);
+
+    if(inputInt == 3){
+        return 3;
+    }
+    else if(inputInt == 2){
+        return 2;
+    }
+    else if(inputInt == 1){
+        return 1;
+    
+    } else{
+        printf("Please enter either 1, 2, or 3: ");
+        return askUserInputNum123();
     }
 
 }
@@ -524,7 +545,10 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
     int computerChoice;
     int valid = 1;
     int favorableChoice = -1;
-    int choicesFound;
+    int winConditionChoice = -1;
+    int choicesFound = 0;
+    int winningChoicesFound = 0;
+    int winConditions[6];
     int favorableChoices[27]; 
 
     int arrayLength = 0;
@@ -560,6 +584,7 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
 
     } else if(difficulty == 2){
         
+        // Calculate how many empty spaces exist on the board to determine size of choice array
         for(int i = 0; i<3; i++){
             if(row1[i] == ' '){
                 arrayLength++;
@@ -945,6 +970,621 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
 
         }
          
+    } else if(difficulty == 3){
+
+        // Calculate how many empty spaces exist on the board to determine size of choice array
+        for(int i = 0; i<3; i++){
+            if(row1[i] == ' '){
+                arrayLength++;
+            }
+            if(row2[i] == ' '){
+                arrayLength++;
+            }
+            if(row3[i] == ' '){
+                arrayLength++;
+            }
+        }
+
+        int arrayChoices[arrayLength];
+
+        // Check first row values
+        for(int i = 0; i < 3; i++){
+
+            if(row1[i] == ' '){
+
+                arrayChoices[arrayCounter] = i+1;
+                arrayCounter++;
+            }
+
+        }
+
+        // Check second row values
+        for(int i = 0; i < 3; i++){
+
+            if(row2[i] == ' '){
+                
+                arrayChoices[arrayCounter] = i+4;
+                arrayCounter++;
+            }
+
+        }
+
+        // Check third row values
+        for(int i = 0; i < 3; i++){
+
+            if(row3[i] == ' '){
+
+                arrayChoices[arrayCounter] = i+7;
+                arrayCounter++;
+            }
+
+        }
+
+        // Check potential win/block conditions in all directions
+        if(turnCounter >= 3){
+
+            // Horizontal
+            // | X | - | X |
+            // -------------
+            // | O | O | - |
+            // -------------
+            // | X | X | - |
+            
+            // If only one gap is found in a row, check if the two spots are the same character
+            if(emptyRowCheck(row1) == 1){
+
+                //printf("First row has a gap.\n");
+                // First row check
+                if(row1[0] == ' '){
+                    if(row1[1] == row1[2]){
+                        
+                        if(row1[1] == computerChar){
+
+                            winConditionChoice = 1;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+                        
+                        favorableChoice = 1;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 1.\n");
+                        }
+                    
+                    } 
+                } else if(row1[1] == ' '){
+                    if(row1[0] == row1[2]){
+
+                        if(row1[0] == computerChar){
+
+                            winConditionChoice = 2;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+                        favorableChoice = 2;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 2.\n");
+                        }
+
+                    } 
+                } else {
+                    if(row1[0] == row1[1]){
+                        
+                        if(row1[0] == computerChar){
+
+                            winConditionChoice = 3;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+                        
+                        favorableChoice = 3;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 3.\n");
+                        
+                        }
+                    } 
+                }
+            }
+
+            if(emptyRowCheck(row2) == 1){
+                //printf("Second row has a gap.\n");
+                // Second row check
+                if(row2[0] == ' '){
+                    if(row2[1] == row2[2]){
+
+                        if(row2[1] == computerChar){
+
+                            winConditionChoice = 4;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 4;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 4.\n");
+                        
+                        }
+                    } 
+                } else if(row2[1] == ' '){
+                    if(row2[0] == row2[2]){
+
+                        if(row2[0] == computerChar){
+
+                            winConditionChoice = 5;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 5;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 5.\n");
+                        }
+                    } 
+                } else {
+                    if(row2[0] == row2[1]){
+                        
+                        if(row2[0] == computerChar){
+
+                            winConditionChoice = 6;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+                        
+                        favorableChoice = 6;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 6.\n");
+
+                        }
+                    } 
+                }
+            
+            }
+
+            if(emptyRowCheck(row3) == 1){
+                //printf("Third row has a gap.\n");
+                // Third row check
+                if(row3[0] == ' '){
+                    if(row3[1] == row3[2]){
+
+                        if(row3[1] == computerChar){
+
+                            winConditionChoice = 7;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 7;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 7.\n");
+                        
+                        }
+                    } 
+                } else if(row3[1] == ' '){
+                    if(row3[0] == row3[2]){
+
+                        if(row3[0] == computerChar){
+
+                            winConditionChoice = 8;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+                        
+                        favorableChoice = 8;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 8.\n");
+
+                        }
+                    } 
+                } else {
+                    if(row3[0] == row3[1]){
+
+                        if(row3[0] == computerChar){
+
+                            winConditionChoice = 9;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 9;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 9.\n");
+                        
+                        }
+                    } 
+                }
+            
+            } 
+            
+            // Vertical
+            // | X | O | - |
+            // -------------
+            // | - | - | O |
+            // -------------
+            // | X | - | O |
+            
+            // Check first column
+            if(emptyColCheck(row1,row2,row3,0) == 1){
+
+                if(row1[0] == ' '){
+                    if(row2[0] == row3[0]){
+
+                        if(row2[0] == computerChar){
+
+                            winConditionChoice = 1;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 1;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 10.\n");
+                        }
+                    } 
+                } else if(row2[0] == ' '){
+                    if(row1[0] == row3[0]){
+
+                        if(row1[0] == computerChar){
+
+                            winConditionChoice = 4;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 4;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 11.\n");
+                        
+                        }
+                    } 
+                } else if(row3[0] == ' '){
+
+                    if(row1[0] == row2[0]){
+
+                        if(row1[0] == computerChar){
+
+                            winConditionChoice = 7;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 7;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 12.\n");
+                        }
+                    } 
+                }
+
+            }
+            
+            // Check second column
+            if(emptyColCheck(row1,row2,row3,1) == 1){
+
+                if(row1[1] == ' '){
+                    if(row2[1] == row3[1]){
+
+                        if(row2[1] == computerChar){
+
+                            winConditionChoice = 2;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 2;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 13.\n");
+                        
+                        }
+                    } 
+                } else if(row2[1] == ' '){
+                    if(row1[1] == row3[1]){
+
+                        if(row1[1] == computerChar){
+
+                            winConditionChoice = 5;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 5;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 14.\n");
+                        }
+                    } 
+                } else if(row3[1] == ' '){
+                    if(row1[1] == row2[1]){
+
+                        if(row1[1] == computerChar){
+
+                            winConditionChoice = 8;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 8;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 15.\n");
+                        
+                        } 
+                    }
+
+                }
+            }
+            
+            // Check third column
+            if(emptyColCheck(row1,row2,row3,2) == 1){
+
+                if(row1[2] == ' '){
+                    if(row2[2] == row3[2]){
+
+                        if(row2[2] == computerChar){
+
+                            winConditionChoice = 3;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 3;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 16.\n");
+
+                        }
+                    } 
+                } else if(row2[2] == ' '){
+                    if(row1[2] == row3[2]){
+
+                        if(row1[2] == computerChar){
+
+                            winConditionChoice = 6;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 6;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 17.\n");
+                        }
+                    } 
+                } else if(row3[2] == ' '){
+                    if(row1[2] == row2[2]){
+
+                        if(row1[2] == computerChar){
+
+                            winConditionChoice = 9;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 9;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 18.\n");
+                        }
+                    }
+                }
+
+            }
+
+            // Diagonal
+            // | X | O | - |
+            // -------------
+            // | - | O | X |
+            // -------------
+            // | O | X | O |
+
+            // Top left to bottom right diagonal
+            if(emptyDiagCheck(row1,row2,row3,0) == 1){
+
+                if(row1[0] == ' '){
+
+                    if(row2[1] == row3[2]){
+
+                        if(row2[1] == computerChar){
+
+                            winConditionChoice = 1;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 1;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 19.\n");
+                        }
+                    }
+
+                } else if(row2[1] == ' '){
+
+                    if(row1[0] == row3[2]){
+
+                        if(row1[0] == computerChar){
+
+                            winConditionChoice = 5;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 5;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 20.\n");
+                        }
+                    }
+
+                } else if(row3[2] == ' '){
+
+                    if(row1[0] == row2[1]){
+
+                        if(row1[0] == computerChar){
+
+                            winConditionChoice = 9;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 9;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 21.\n");
+
+                        }
+                    }
+
+                }
+
+            }
+
+            // Top right to bottom left diagonal
+            if(emptyDiagCheck(row1,row2,row3,1) == 1){
+
+                if(row1[2] == ' '){
+
+                    if(row2[1] == row3[0]){
+
+                        if(row2[1] == computerChar){
+
+                            winConditionChoice = 3;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 3;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 22.\n");
+                        
+                        }
+                    }
+
+                } else if(row2[1] == ' '){
+
+                    if(row1[2] == row3[0]){
+
+                        if(row1[2] == computerChar){
+
+                            winConditionChoice = 5;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 5;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 23.\n");
+                        }
+                    }
+
+                } else if(row3[0] == ' '){
+
+                    if(row1[2] == row2[1]){
+
+                        if(row1[2] == computerChar){
+
+                            winConditionChoice = 7;
+                            winningChoicesFound++;
+                            winConditions[winningChoicesFound - 1] = winConditionChoice;
+                        
+                        } else{
+
+                        favorableChoice = 7;
+                        choicesFound++;
+                        favorableChoices[choicesFound - 1] = favorableChoice;
+                        //printf("Checkpoint 24.\n");
+                        }
+
+                    }
+
+                }
+
+            }
+
+            // If choices found is more than one, choose one randomly
+            // Due to randomness, this will cause instances where computer could win but 
+            // chooses to block player's winning line
+
+            if(winningChoicesFound > 1){
+
+                srand(time(0));
+                computerChoice = winConditions[(rand() % winningChoicesFound)];
+            
+            } else if(winningChoicesFound == 1){
+
+                computerChoice = winConditions[winningChoicesFound - 1];
+
+            } else if(choicesFound > 1){
+
+                srand(time(0));
+                computerChoice = favorableChoices[(rand() % choicesFound)];
+
+            } else if(choicesFound == 1){
+
+                computerChoice = favorableChoices[choicesFound-1];
+                //printf("Computer has found %i optimal choice.\n", choicesFound);
+                
+            } else{
+
+                //printf("Computer found no optimal choice. Picking randomly...\n");
+                computerChoice = randomlyChooseAvailableSpot(row1,row2,row3);
+
+            }
+
+        // If not enough turns have been played, pick a random spot
+        } else {
+
+            computerChoice = randomlyChooseAvailableSpot(row1,row2,row3);
+        
+        }
+
+        printf("Computer has chosen %i\n", computerChoice);
+
+        if(computerChoice > 0 && computerChoice < 4){
+            row1[computerChoice-1] = computerChar;
+
+        } else if(computerChoice > 3 && computerChoice < 7){
+            row2[computerChoice-4] = computerChar;
+        
+        } else{
+            row3[computerChoice-7] = computerChar;
+        }
+                         
     }
 
 }
@@ -987,7 +1627,7 @@ void main(){
     printf("Press 1 to start a new game.\n");
     printf("Press 2 to quit.\n");
 
-    inputNum = askUserInputNum();
+    inputNum = askUserInputNum12();
     
     if(inputNum == 2){
         printf("Thanks for playing! Come back soon.\n\n");
@@ -1001,7 +1641,7 @@ void main(){
         printf("Press 1 to play against the computer. \n");
         printf("Press 2 for local multiplayer.\n");
 
-        gameMode = askUserInputNum();
+        gameMode = askUserInputNum12();
 
         if(gameMode == 1){    
             do{
@@ -1030,9 +1670,11 @@ void main(){
                 sleep(1);
                 printf("Difficulty 2: Computer actively tries to block your lines and/or fills in its own.\n");
                 sleep(1);
-                printf("Please enter either 1 or 2: ");
+                printf("Difficulty 3: Similar to 2, but computer always takes the chance to win if possible.\n");
+                sleep(1);
+                printf("Please enter either 1, 2, or 3: ");
 
-                computerDifficulty = askUserInputNum();
+                computerDifficulty = askUserInputNum123();
 
                 printf("\n");
                 printf("Choosing starting player...\n");
@@ -1158,6 +1800,7 @@ void main(){
             sleep(1);
             return 0;
         
+        // Local multiplayer option
         } else {
 
             do{
