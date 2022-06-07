@@ -204,7 +204,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row1[0] == (char)' '){
                 (row1[0]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row1[0]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row1[0]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
@@ -213,7 +213,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row1[1] == (char)' '){
                 (row1[1]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row1[1]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row1[1]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
@@ -222,7 +222,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row1[2] == (char)' '){
                 (row1[2]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row1[2]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row1[2]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
@@ -231,7 +231,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row2[0] == (char)' '){
                 (row2[0]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row2[0]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row2[0]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
@@ -240,7 +240,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row2[1] == (char)' '){
                 (row2[1]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row2[1]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row2[1]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
@@ -249,7 +249,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row2[2] == (char)' '){
                 (row2[2]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row2[2]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row2[2]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
@@ -258,7 +258,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row3[0] == (char)' '){
                 (row3[0]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row3[0]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row3[0]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
@@ -267,7 +267,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row3[1] == (char)' '){
                 (row3[1]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row3[1]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row3[1]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
@@ -276,7 +276,7 @@ int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, in
             if((char)row3[2] == (char)' '){
                 (row3[2]) = playerChar;
             } else {
-                printf("Position %i is already taken by %c, please choose another.", boardChoice, displayCapitalXO(row3[2]));
+                printf("Position %i is already taken by %c, please choose another.\n", boardChoice, displayCapitalXO(row3[2]));
                 askUserInputBoard(row1, row2, row3, playerChar, gamemode);
             }
             break;
