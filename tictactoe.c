@@ -561,11 +561,11 @@ void askComputerInputBoard(char row1[], char row2[], char row3[], char playerCha
     int arrayLength = 0;
     int arrayCounter = 0;
     
-    if(playerChar == 'x'){
+    if(playerChar == 'x' || playerChar == 'X'){
         computerChar = 'o';
     }
 
-    if(playerChar == 'o'){
+    if(playerChar == 'o' || playerChar == 'O'){
         computerChar = 'x';
     }
 
@@ -1592,6 +1592,8 @@ void main(){
     char playAgain = 'n';
     int turnCounter = 0;
     int computerDifficulty = 1;
+    int bot1Difficulty = 1;
+    int bot2Difficulty = 1;
 
     char inputLetter;
     char player1Letter;
@@ -1623,8 +1625,9 @@ void main(){
         printf("\n");
         printf("Press 1 to play against the computer. \n");
         printf("Press 2 for local multiplayer.\n");
+        printf("Press 3 to watch two bots play against each other.\n");
 
-        gameMode = askUserInputNum12();
+        gameMode = askUserInputNum123();
 
         if(gameMode == 1){    
             do{
@@ -1784,7 +1787,7 @@ void main(){
             return 0;
         
         // Local multiplayer option
-        } else {
+        } else if(gameMode == 2){
 
             do{
 
@@ -1968,7 +1971,186 @@ void main(){
             sleep(1);
             return 0;
 
-        }
+        // Bot vs Bot option
+        } else {
+
+            do{
+
+            printf("\n");
+            printf("Please choose a difficulty for each bot:\n");
+            sleep(1);
+            printf("Difficulty 1: Computer randomly chooses its spots.\n");
+            sleep(1);
+            printf("Difficulty 2: Computer actively tries to block your lines and/or fills in its own.\n");
+            sleep(1);
+            printf("Difficulty 3: Similar to 2, but computer always takes the chance to win if possible.\n");
+            sleep(1);
+            printf("Bot 1: Please enter either 1, 2, or 3: ");
+
+            bot1Difficulty = askUserInputNum123();
+            
+            printf("\n");
+            printf("Bot 2: Please enter either 1, 2, or 3: ");
+
+            bot2Difficulty = askUserInputNum123();
+
+            printf("\n");
+            printf("Choosing starting bot...\n");
+            sleep(1);
+            srand(time(0));
+            startingPlayer = rand() % 2;
+
+            if(startingPlayer == 0){
+                printf("Bot 1 gets to start first.\n");
+                sleep(1);
+            } else{
+                printf("Bot 2 gets to start first.\n");
+                sleep(1);
+            }
+
+            if(startingPlayer == 0){
+
+                printf("\n");
+                printf("Choosing X or O for Bot 1...\n");
+                sleep(1);
+
+                if(rand() % 2 == 0){
+                    player1Letter = 'X';
+                    player1DisplayLetter = 'X';
+                    player2Letter = 'O';
+                    player2DisplayLetter = 'O';
+                } else {
+                    player1Letter = 'O';
+                    player1DisplayLetter = 'O';
+                    player2Letter = 'X';
+                    player2DisplayLetter = 'X';
+                }
+
+                printf("\n");
+                printf("Bot 1 will be %c.\n", player1DisplayLetter);
+                sleep(1);
+                printf("Bot 2 will be %c.\n", player2DisplayLetter);
+                sleep(1);
+
+                printTableStart();
+                printf("\n");
+                sleep(1);
+
+                do{
+                
+                    //askUserInputBoard(&firstRow, &secondRow, &thirdRow, player1Letter, gameMode);
+                    askComputerInputBoard(&firstRow, &secondRow, &thirdRow, player2Letter, bot1Difficulty, turnCounter);
+                    turnCounter++;
+                    printf("\n");
+
+                    printCurrentTable(firstRow, secondRow, thirdRow);
+                    sleep(2);
+
+                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                    if(winCondition){
+                        break;
+                    }
+
+                    if(turnCounter == 9){
+                        printf("Stalemate!\n");
+                        break;
+                    }
+
+                    askComputerInputBoard(&firstRow, &secondRow, &thirdRow, player1Letter, bot2Difficulty, turnCounter);
+
+                    turnCounter++;
+                    printCurrentTable(firstRow, secondRow, thirdRow);
+                    sleep(2);
+
+                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                    if(winCondition){
+                        break;
+                    }
+
+                    if(turnCounter == 9){
+                        printf("Stalemate!\n");
+                        break;
+                    }
+
+                }while(!winCondition);
+
+            } else {
+
+                printf("\n");
+                printf("Choosing X or O for Bot 2...\n");
+                sleep(1);
+
+                if(rand() % 2 == 0){
+                    player2Letter = 'X';
+                    player2DisplayLetter = 'X';
+                    player1Letter = 'O';
+                    player1DisplayLetter = 'O';
+                } else {
+                    player2Letter = 'O';
+                    player2DisplayLetter = 'O';
+                    player1Letter = 'X';
+                    player1DisplayLetter = 'X';
+                }
+
+                printf("\n");
+                printf("Bot 1 will be %c.\n", player1DisplayLetter);
+                sleep(1);
+                printf("Bot 2 will be %c.\n", player2DisplayLetter);
+                sleep(1);
+
+                do{
+                
+                    askComputerInputBoard(&firstRow, &secondRow, &thirdRow, player1Letter, bot2Difficulty, turnCounter);
+                    turnCounter++;
+                    printf("\n");
+
+                    printCurrentTable(firstRow, secondRow, thirdRow);
+                    sleep(2);
+
+                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                    if(winCondition){
+                        break;
+                    }
+
+                    if(turnCounter == 9){
+                        printf("Stalemate!\n");
+                        break;
+                    }
+
+                    askComputerInputBoard(&firstRow, &secondRow, &thirdRow, player2Letter, bot1Difficulty, turnCounter);
+
+                    turnCounter++;
+                    printCurrentTable(firstRow, secondRow, thirdRow);
+                    sleep(2);
+
+                    winCondition = checkWinCondition(firstRow, secondRow, thirdRow, winnerChar);
+                    if(winCondition){
+                        break;
+                    }
+
+                    if(turnCounter == 9){
+                        printf("Stalemate!\n");
+                        break;
+                    }
+
+                }while(!winCondition);
+
+            }
+
+            sleep(1);
+            printf("Would you like to play again? (y/n): ");
+            playAgain = askUserInputYN();
+
+            clearTable(&firstRow, &secondRow, &thirdRow);
+            printf("\n");
+            turnCounter = 0;
+
+        } while(playAgain = 'y');
+
+        printf("Thanks for playing! Come back soon.\n\n");
+        sleep(1);
+        return 0;
 
     }
+}
 }
