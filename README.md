@@ -1,5 +1,5 @@
 # ticTacToe
-ticTacToe with difficulty levels and local multiplayer
+ticTacToe w/ local multiplayer, bot difficulty options, and bot vs bot mode
 
 Roadmap:
   - Add local multiplayer ✅
