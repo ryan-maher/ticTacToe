@@ -178,7 +178,7 @@ void printTableStart(){
 
 // Asks user to input position from 1 to 9
 // If position already taken, asks user to input another position
-int askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, int gamemode){
+void askUserInputBoard(char row1[], char row2[], char row3[], char playerChar, int gamemode){
 
     int boardChoice;
     
@@ -1580,4 +1580,5 @@ void clearTable(char row1[], char row2[], char row3[]){
         row3[i] = ' ';
     }
 }
+
 // End of helper functions
